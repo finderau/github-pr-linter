@@ -1,0 +1,9 @@
+name: "Finder GitHub Pull Request Linter"
+description: "Lints PR titles and descriptions"
+on: [pull_request]
+inputs:
+  GITHUB_TOKEN:
+    required: true
+runs:
+  using: "node18"
+  main: "index.js"

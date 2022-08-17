@@ -1,0 +1,23 @@
+{
+  "name": "github-pr-linter",
+  "version": "1.0.0",
+  "description": "Finder's GitHub commit linter, runs as a GitHub Action",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/finderau/github-pr-linter.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/finderau/github-pr-linter/issues"
+  },
+  "homepage": "https://github.com/finderau/github-pr-linter#readme",
+  "dependencies": {
+    "@actions/core": "*",
+    "@actions/github": "*"
+  }
+}
