@@ -13,3 +13,6 @@ async function run() {
         core.error(error);
     }
 }
+
+// noinspection JSIgnoredPromiseFromCall
+run();
