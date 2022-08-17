@@ -9,7 +9,7 @@ let
 in pkgs.mkShell {
   packages = with pkgs; [
     nodePackages.npm
-    nodejs-18_x
+    nodejs-16_x
   ];
 
   inherit NPM_CONFIG_PREFIX;
