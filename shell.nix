@@ -2,7 +2,6 @@
 
 let
   lib = import <nixpkgs/lib>;
-  buildNodejs = pkgs.callPackage <nixpkgs/pkgs/development/web/nodeJs/nodeJs.nix> { python = pkgs.python310; };
 
   NPM_CONFIG_PREFIX = toString ./npm_config_prefix;
 

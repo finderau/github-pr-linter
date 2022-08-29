@@ -8,7 +8,7 @@ async function run() {
         const title = github.context.payload.pull_request.title;
         const body = github.context.payload.pull_request.body;
 
-        lint(body, title, core.error, core.info);
+        lint(body, title, core.setFailed, core.info);
     } catch (error) {
         core.error(error);
     }
