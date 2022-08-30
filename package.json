@@ -1,6 +1,6 @@
 {
   "name": "github-pr-linter",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Finder's GitHub commit linter, runs as a GitHub Action",
   "main": "index.js",
   "scripts": {
