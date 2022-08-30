@@ -5,8 +5,8 @@ const lint = require('./src/lint.js');
 // noinspection JSUnusedLocalSymbols
 async function run() {
     try {
-        const title = github.context.payload.pull_request.title;
         const body = github.context.payload.pull_request.body;
+        const title = github.context.payload.pull_request.title;
 
         lint(body, title, core.setFailed, core.info);
     } catch (error) {
