@@ -30,6 +30,10 @@ module.exports = function (body, title, failureCallback, infoCallback) {
             + 'Include the Jira reference only, not a full link.'
         );
     }
+    const regexResult = jiraRegex.exec(bodyLines[bodyLines.length - 1]);
+    if (regexResult[2] === 'XYZ-123') {
+        failureCallback('Invalid PR body: The template Jira reference (XYZ-123) must be replaced.');
+    }
 
     // Ensure that there is a blank line before the Jira reference
     infoCallback('Checking PR body empty line');
