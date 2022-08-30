@@ -34,6 +34,10 @@ module.exports = function (body, title, failureCallback, infoCallback) {
     // Ensure that there is a blank line before the Jira reference
     infoCallback('Checking PR body empty line');
     if (bodyLines[bodyLines.length - 2] !== '') {
+        for (let i = 0; i < bodyLines.length; i++) {
+            infoCallback('Body line ' + i + ': ' + bodyLines[i]);
+        }
+
         failureCallback(
             'Invalid PR body. Needs a blank line before the Jira reference. ' +
             '(Expected blank line, found ' + bodyLines[bodyLines.length - 2] + ')'
