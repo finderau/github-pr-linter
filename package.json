@@ -1,10 +1,10 @@
 {
   "name": "github-pr-linter",
-  "version": "1.0.10",
+  "version": "1.2.0",
   "description": "Finder's GitHub commit linter, runs as a GitHub Action",
   "main": "index.js",
   "scripts": {
-    "test": "test-failure.js"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,8 @@
   "dependencies": {
     "@actions/core": "*",
     "@actions/github": "*"
+  },
+  "devDependencies": {
+    "jest": "^29.0.1"
   }
 }

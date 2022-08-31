@@ -20,31 +20,38 @@ module.exports = function (body, title, failureCallback, infoCallback) {
         failureCallback('Invalid PR body. Needs a description of the WHY behind the change.');
     }
 
-    // Ensure a Jira ticket is referenced in the body
-    infoCallback('Checking PR body Jira reference');
-    const jiraRegex = new RegExp('^(Relates to|Closes) ((?<!([A-Z]{1,10})-?)[A-Z]+-\\d+)$');
-    if (!jiraRegex.test(bodyLines[bodyLines.length - 1])) {
-        failureCallback(
-            'Invalid PR body: The last line must contain a Jira reference. '
-            + 'Must be either (1) Relates to PROJECT-0000, or (2) Closes PROJECT-0000. '
-            + 'Include the Jira reference only, not a full link.'
-        );
-    }
-    const regexResult = jiraRegex.exec(bodyLines[bodyLines.length - 1]);
-    if (regexResult[2] === 'XYZ-123') {
-        failureCallback('Invalid PR body: The template Jira reference (XYZ-123) must be replaced.');
-    }
+    // Ensure that the last line of the body is not an empty line
+    infoCallback('Checking PR body does not end in empty line');
+    if (bodyLines[bodyLines.length - 1].trim() === '') {
+        failureCallback('Invalid PR body. Last line is empty.');
+    } else {
+        // Ensure a Jira ticket is referenced on the last line of the body
+        infoCallback('Checking PR body Jira reference');
+        const jiraRegex = new RegExp('^(Relates to|Closes) ((?<!([A-Z]{1,10})-?)[A-Z]+-\\d+)$');
+        if (!jiraRegex.test(bodyLines[bodyLines.length - 1])) {
+            failureCallback(
+                'Invalid PR body: The last line must contain a Jira reference. '
+                + 'Must be either (1) Relates to PROJECT-0000, or (2) Closes PROJECT-0000. '
+                + 'Include the Jira reference only, not a full link.'
+            );
+        } else {
+            const regexResult = jiraRegex.exec(bodyLines[bodyLines.length - 1]);
+            if (regexResult[2] === 'XYZ-123') {
+                failureCallback('Invalid PR body: The template Jira reference (XYZ-123) must be replaced.');
+            }
 
-    // Ensure that there is a blank line before the Jira reference
-    infoCallback('Checking PR body empty line');
-    if (bodyLines[bodyLines.length - 2].trim() !== '') {
-        for (let i = 0; i < bodyLines.length; i++) {
-            infoCallback('Body line ' + i + ': ' + bodyLines[i]);
+            // Ensure that there is a blank line before the Jira reference
+            infoCallback('Checking PR body empty line before Jira reference');
+            if (bodyLines[bodyLines.length - 2].trim() !== '') {
+                for (let i = 0; i < bodyLines.length; i++) {
+                    infoCallback('Body line ' + i + ': ' + bodyLines[i]);
+                }
+
+                failureCallback(
+                    'Invalid PR body. Needs a blank line before the Jira reference. ' +
+                    '(Expected blank line, found ' + bodyLines[bodyLines.length - 2] + ')'
+                );
+            }
         }
-
-        failureCallback(
-            'Invalid PR body. Needs a blank line before the Jira reference. ' +
-            '(Expected blank line, found ' + bodyLines[bodyLines.length - 2] + ')'
-        );
     }
 };
