@@ -1,0 +1,26 @@
+{
+  "include": ["src"],
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "./.compiled",
+    "rootDir": "./src",
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "noImplicitAny": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "esModuleInterop": true,
+    "typeRoots": [
+      "../@types",
+      "node_modules/@types",
+      "../node_modules/@types"
+    ]
+  },
+  "exclude": ["node_modules", "**/*.unit.spec.ts"]
+}
