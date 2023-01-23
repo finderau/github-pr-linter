@@ -26,12 +26,13 @@ module.exports = function (body, title, failureCallback, infoCallback) {
         failureCallback('Invalid PR body. Last line is empty.');
     } else {
         // Ensure a Jira ticket is referenced on the last line of the body
+        // Note that the regular expression matches on the Markdown syntax style for Jira reference links.
         infoCallback('Checking PR body Jira reference');
-        const jiraRegex = new RegExp('^(Relates to|Closes) ((?<!([A-Z]{1,10})-?)[A-Z]+-\\d+)$');
+        const jiraRegex = new RegExp(/^(Relates to|Closes) \[([A-Za-z]+-[0-9]+)]\((http|https):\/\/finder\.atlassian\.net\/browse\/([A-Za-z])+-[0-9]+\)+$/);
         if (!jiraRegex.test(bodyLines[bodyLines.length - 1])) {
             failureCallback(
                 'Invalid PR body: The last line must contain a Jira reference. '
-                + 'Must be either (1) Relates to PROJECT-0000, or (2) Closes PROJECT-0000. '
+                + 'Must be either (1) Relates to [PROJECT-0000](https://finder.atlassian.net/browse/PROJECT-0000), or (2) Closes [PROJECT-0000](https://finder.atlassian.net/browse/PROJECT-0000). '
                 + 'Include the Jira reference only, not a full link.'
             );
         } else {

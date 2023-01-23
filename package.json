@@ -18,9 +18,11 @@
   "homepage": "https://github.com/finderau/github-pr-linter#readme",
   "dependencies": {
     "@actions/core": "*",
-    "@actions/github": "*"
+    "@actions/github": "*",
+    "json5": ">=2.2.2"
   },
   "devDependencies": {
-    "jest": "^29.0.1"
+    "jest": "^29.0.1",
+    "json5": ">=2.2.2"
   }
 }
