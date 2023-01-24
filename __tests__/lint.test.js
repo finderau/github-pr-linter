@@ -19,7 +19,7 @@ test('failure with empty line', () => {
     const title = 'chore: something';
     const body = `Some description
 
-Closes ABC-123
+Closes [ABC-123](https://finder.atlassian.net/browse/ABC-123)
 `;
 
     const errorCallback = jest.fn(() => {});
@@ -31,7 +31,7 @@ test('failure with XYZ-123', () => {
     const title = 'chore: something';
     const body = `Some description
 
-Closes XYZ-123`;
+Closes [XYZ-123](https://finder.atlassian.net/browse/XYZ-123)`;
 
     const errorCallback = jest.fn(() => {});
     lint(body, title, errorCallback, () => {});
@@ -44,7 +44,7 @@ test('success', () => {
 like this one were failing the check:
 https://github.com/finderau/site/pull/5057
 
-Relates to SRE-225`;
+Relates to [SRE-225](https://finder.atlassian.net/browse/SRE-225)`;
 
     const errorCallback = jest.fn(() => {});
     lint(body, title, errorCallback, () => {});
@@ -73,9 +73,33 @@ This PR improves redirect page performance by fixing the mechanism, which allows
 
 Remember to follow the [Major Deployment Guidelines](https://github.com/finderau/engineering-standards/blob/master/general/2020-06-03-major-deployment-guidelines.md) when deploying.
 
-Relates to CST-2332`;
+Relates to [CST-2332](https://finder.atlassian.net/browse/CST-2332)`;
 
     const errorCallback = jest.fn(() => {});
     lint(body, title, errorCallback, () => {});
     expect(errorCallback.mock.calls.length).toBe(0);
+});
+
+test('failure with full jira link', () => {
+    const title = 'chore: something';
+    const body = `Some description
+
+Relates to https://finder.atlassian.net/browse/PLATFORM-4864
+`;
+
+const errorCallback = jest.fn(() => {});
+    lint(body, title, errorCallback, () => {});
+    expect(errorCallback.mock.calls.length).toBe(1);
+});
+
+test('failure with invalid jira reference', () => {
+    const title = 'chore: something';
+    const body = `Some description
+
+Relates to 1234
+`;
+
+const errorCallback = jest.fn(() => {});
+    lint(body, title, errorCallback, () => {});
+    expect(errorCallback.mock.calls.length).toBe(1);
 });
