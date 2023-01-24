@@ -33,7 +33,7 @@ module.exports = function (body, title, failureCallback, infoCallback) {
             failureCallback(
                 'Invalid PR body: The last line must contain a Jira reference. '
                 + 'Must be either (1) Relates to [PROJECT-0000](https://finder.atlassian.net/browse/PROJECT-0000), or (2) Closes [PROJECT-0000](https://finder.atlassian.net/browse/PROJECT-0000). '
-                + 'Include the Jira reference only, not a full link.'
+                + 'Include the full Jira reference link in Markdown syntax.'
             );
         } else {
             const regexResult = jiraRegex.exec(bodyLines[bodyLines.length - 1]);
