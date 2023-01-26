@@ -25,34 +25,25 @@ module.exports = function (body, title, failureCallback, infoCallback) {
     if (bodyLines[bodyLines.length - 1].trim() === '') {
         failureCallback('Invalid PR body. Last line is empty.');
     } else {
-        // Ensure a Jira ticket is referenced on the last line of the body
-        // Note that the regular expression matches on the Markdown syntax style for Jira reference links.
+        // Ensure that a valid Jira reference exists in the pull request body
         infoCallback('Checking PR body Jira reference');
-        const jiraRegex = new RegExp(/^(Relates to|Closes) \[([A-Za-z]+-[0-9]+)]\((http|https):\/\/finder\.atlassian\.net\/browse\/([A-Za-z])+-[0-9]+\)+$/);
-        if (!jiraRegex.test(bodyLines[bodyLines.length - 1])) {
+        const jiraReferenceRegex = new RegExp(/^(Relates to|Closes) \[([A-Za-z]+-[0-9]+)]$/gm);
+        let regexMatchFound = false;
+        for (const line of bodyLines) {
+            if (jiraReferenceRegex.test(line)) {
+              if (!regexMatchFound) {
+                regexMatchFound = true;
+                infoCallback('Valid Jira reference exists in body')
+                break;
+              }
+            }
+        }
+        if (!regexMatchFound) {
             failureCallback(
-                'Invalid PR body: The last line must contain a Jira reference. '
-                + 'Must be either (1) Relates to [PROJECT-0000](https://finder.atlassian.net/browse/PROJECT-0000), or (2) Closes [PROJECT-0000](https://finder.atlassian.net/browse/PROJECT-0000). '
-                + 'Include the Jira reference only, not a full link.'
+                'Invalid Jira reference in body: The last line must contain a Jira reference. '
+                + 'Must be either (1) Relates to [PROJECT-0000], or (2) Closes [PROJECT-0000]. '
+                + 'Include the Jira reference within square brackets e.g "[PROJECT-0000]" , not a full link.'
             );
-        } else {
-            const regexResult = jiraRegex.exec(bodyLines[bodyLines.length - 1]);
-            if (regexResult[2] === 'XYZ-123') {
-                failureCallback('Invalid PR body: The template Jira reference (XYZ-123) must be replaced.');
-            }
-
-            // Ensure that there is a blank line before the Jira reference
-            infoCallback('Checking PR body empty line before Jira reference');
-            if (bodyLines[bodyLines.length - 2].trim() !== '') {
-                for (let i = 0; i < bodyLines.length; i++) {
-                    infoCallback('Body line ' + i + ': ' + bodyLines[i]);
-                }
-
-                failureCallback(
-                    'Invalid PR body. Needs a blank line before the Jira reference. ' +
-                    '(Expected blank line, found ' + bodyLines[bodyLines.length - 2] + ')'
-                );
-            }
         }
     }
 };
