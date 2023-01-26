@@ -19,7 +19,7 @@ test('failure with empty line', () => {
     const title = 'chore: something';
     const body = `Some description
 
-Closes ABC-123
+Closes [ABC-123](https://finder.atlassian.net/browse/ABC-123)
 `;
 
     const errorCallback = jest.fn(() => {});
@@ -67,4 +67,28 @@ Relates to [CST-2332]`;
     const errorCallback = jest.fn(() => {});
     lint(body, title, errorCallback, () => {});
     expect(errorCallback.mock.calls.length).toBe(0);
+});
+
+test('failure with full jira link', () => {
+    const title = 'chore: something';
+    const body = `Some description
+
+Relates to https://finder.atlassian.net/browse/PLATFORM-4864
+`;
+
+const errorCallback = jest.fn(() => {});
+    lint(body, title, errorCallback, () => {});
+    expect(errorCallback.mock.calls.length).toBe(1);
+});
+
+test('failure with invalid jira reference', () => {
+    const title = 'chore: something';
+    const body = `Some description
+
+Relates to 1234
+`;
+
+const errorCallback = jest.fn(() => {});
+    lint(body, title, errorCallback, () => {});
+    expect(errorCallback.mock.calls.length).toBe(1);
 });
