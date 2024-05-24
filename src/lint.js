@@ -27,7 +27,7 @@ module.exports = function (body, title, failureCallback, infoCallback) {
     } else {
         // Ensure that a valid Jira reference exists in the pull request body
         infoCallback('Checking PR body Jira reference');
-        const jiraReferenceRegex = new RegExp(/^(Relates to|Closes) \[([A-Za-z]+-[0-9]+)]$/gm);
+        const jiraReferenceRegex = new RegExp(/^(Relates to|Closes) \[([A-Za-z0-9]+-[0-9]+)]$/gm);
         let regexMatchFound = false;
         for (const line of bodyLines) {
             if (jiraReferenceRegex.test(line)) {
